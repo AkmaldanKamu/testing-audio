@@ -1,60 +1,112 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Audio Autoplay</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-            background-color: #f0f0f0;
-        }
-        h1 {
-            color: #333;
-        }
-        #message {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: red;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #000000;
+        color: #ffffff; /* Untuk teks putih di latar belakang hitam */
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      #message {
+        font-size: 1.2em;
+        color: rgb(135, 221, 222);
+        text-shadow: 2px 2px rgb(135, 135, 135);
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        text-align: center;
+        cursor: pointer; /* Menunjukkan bahwa elemen dapat diklik */
+      }
+
+      .maskot {
+        z-index: 4;
+        display: none; 
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0; 
+        padding: 10px; 
+      }
+
+      .maskot img {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
 </head>
 <body>
-    <h1>Audio Auto Play</h1>
     <audio id="audioPlayer">
-        <source src="maskot.mp3" type="audio/mp3">
+      <source src="maskot.mp3" type="audio/mp3" />
     </audio>
-    <div id="message"></div>
-
+    <div id="message">
+      <h1>KLIK UNTUK MENAMPILKAN MENU</h1>
+    </div>
+    <div class="maskot">
+      <img src="testing.png" width="100px" alt="Testing Image" />
+      <div id="typingEffect"></div>
+    </div>
     <script>
-        window.addEventListener('load', () => {
-            const audioPlayer = document.getElementById('audioPlayer');
-            const message = document.getElementById('message');
+      window.addEventListener("load", () => {
+        const audioPlayer = document.getElementById("audioPlayer");
+        const message = document.getElementById("message");
+        const maskot = document.querySelector(".maskot");
 
-            // Fungsi untuk memulai audio
-            const startAudio = () => {
-                audioPlayer.play().then(() => {
-                    console.log("Audio diputar.");
-                    message.textContent = ""; // Hapus pesan setelah audio diputar
-                }).catch(error => {
-                    console.log("Pemutaran audio gagal: " + error);
-                });
-            };
+        // Fungsi untuk memulai audio dan menampilkan gambar
+        const startAudioAndShowImage = () => {
+          audioPlayer.play().then(() => {
+            console.log("Audio diputar.");
+            message.textContent = ""; // Hapus pesan setelah audio diputar
+            maskot.style.display = "flex"; // Tampilkan gambar
+          }).catch((error) => {
+            console.log("Pemutaran audio gagal: " + error);
+          });
+        };
 
-            // Coba mulai memutar audio
-            audioPlayer.play().then(() => {
-                console.log("Audio diputar otomatis.");
-            }).catch(error => {
-                console.log("Autoplay gagal: Interaksi pengguna mungkin diperlukan.");
-                message.textContent = "Autoplay gagal, klik di mana saja untuk memulai audio.";
-                message.style.cursor = "pointer";
-
-                // Tambahkan event listener ke seluruh body
-                document.body.addEventListener('click', startAudio, { once: true });
-            });
+        // Coba mulai memutar audio
+        audioPlayer.play().then(() => {
+          console.log("Audio diputar otomatis.");
+          maskot.style.display = "flex"; // Tampilkan gambar jika autoplay berhasil
+        }).catch((error) => {
+          console.log("Autoplay gagal: Interaksi pengguna mungkin diperlukan.");
+          // Tambahkan event listener ke elemen #message
+          message.addEventListener("click", startAudioAndShowImage, { once: true });
         });
+      });
+
+      function typeWriter(element, text, speed) {
+        let i = 0;
+        function type() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+          }
+        }
+        type();
+      }
+
+      window.addEventListener('load', () => {
+        const typingElement = document.getElementById('typingEffect');
+        const textToType = "Halo! Ini adalah efek mengetik dengan HTML dan JavaScript.";
+        typeWriter(typingElement, textToType, 100); // 100 ms per karakter
+      });
     </script>
 </body>
 </html>

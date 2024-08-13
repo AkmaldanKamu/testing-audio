@@ -15,10 +15,11 @@
         font-family: Arial, sans-serif;
         background-color: #000000;
         color: #ffffff; /* Untuk teks putih di latar belakang hitam */
-      }
-
-      h1 {
-        color: #333;
+        margin: 0;
+        height: 100vh; /* Menjaga tinggi halaman */
+        overflow: hidden; /* Mencegah scroll saat modal muncul */
+        display: flex;
+        flex-direction: column;
       }
 
       #message {
@@ -43,11 +44,105 @@
         bottom: 0;
         left: 0; 
         padding: 10px; 
+        background: blue;
+        width: 100%;
       }
 
       .maskot img {
         max-width: 100%;
         height: auto;
+      }
+
+      /* Navbar styles */
+      nav {
+        position: fixed; /* Tetap di atas */
+        top: 0; /* Posisi di atas */
+        left: 0; /* Posisi di kiri */
+        width: 100%; /* Lebar penuh */
+        background: #333;
+        padding: 10px 0;
+        z-index: 1000; /* Pastikan navbar di atas konten lain */
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        margin: 0 15px;
+      }
+
+      nav a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      /* Modal styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Ensure it is above other content */
+      }
+
+      .modal-content {
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+      }
+
+      .modal-card {
+        background: #333;
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-card h2 {
+        color: #fff;
+      }
+
+      .modal-card p {
+        color: #ccc;
+      }
+
+      .close-modal {
+        background: #f00;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+
+      .close-modal:hover {
+        background: #d00;
       }
     </style>
 </head>
@@ -62,6 +157,30 @@
       <img src="testing.png" width="100px" alt="Testing Image" />
       <div id="typingEffect"></div>
     </div>
+
+    <!-- Modal Overlay and Content -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-content">
+        <button class="close-modal" id="closeModal">Tutup</button>
+        <div class="modal-card">
+          <h2>Judul Card 1</h2>
+          <p>Deskripsi singkat untuk card pertama. Menyediakan informasi dasar tentang topik ini.</p>
+        </div>
+        <div class="modal-card">
+          <h2>Judul Card 2</h2>
+          <p>Deskripsi singkat untuk card kedua. Menyediakan informasi tambahan atau berbeda dari card pertama.</p>
+        </div>
+        <div class="modal-card">
+          <h2>Judul Card 3</h2>
+          <p>Deskripsi singkat untuk card ketiga. Memberikan lebih banyak detail atau opsi untuk pengguna.</p>
+        </div>
+        <div class="modal-card">
+          <h2>Judul Card 4</h2>
+          <p>Deskripsi singkat untuk card keempat. Menyediakan informasi tambahan yang bermanfaat untuk pengguna.</p>
+        </div>
+      </div>
+    </div>
+
     <script>
       window.addEventListener("load", () => {
         const audioPlayer = document.getElementById("audioPlayer");
@@ -105,7 +224,25 @@
       window.addEventListener('load', () => {
         const typingElement = document.getElementById('typingEffect');
         const textToType = "HALO SELAMAT DATANG DI WEBSITE HEALTHYSELF, SILAHKAN PILIH KARAKTER USIA SESUAI DENGAN YANG KAMU BUTUHKAN.";
-        typeWriter(typingElement, textToType, 65); // 100 ms per karakter
+        typeWriter(typingElement, textToType, 65); // 65 ms per karakter
+      });
+
+      // Modal functionality
+      document.getElementById('message').addEventListener('click', () => {
+        document.getElementById('modalOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Disable scroll
+      });
+
+      document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('modalOverlay').style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scroll
+      });
+
+      document.getElementById('modalOverlay').addEventListener('click', (event) => {
+        if (event.target === document.getElementById('modalOverlay')) {
+          document.getElementById('modalOverlay').style.display = 'none';
+          document.body.style.overflow = 'auto'; // Enable scroll
+        }
       });
     </script>
 </body>

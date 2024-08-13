@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Autoplay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Auto Play</h1>
+    <audio id="audioPlayer" autoplay>
+        <source src="maskot.mp3" type="audio/mp3">
+    </audio>
+    <div id="message"></div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const message = document.getElementById('message');
+
+            // Coba mulai memutar audio
+            audioPlayer.play().then(() => {
+                console.log("Audio diputar otomatis.");
+            }).catch(error => {
+                console.log("Autoplay gagal: Interaksi pengguna mungkin diperlukan.");
+                message.textContent = "Autoplay gagal, klik untuk memulai audio.";
+                message.style.cursor = "pointer";
+
+                // Tambahkan event listener untuk memulai audio saat user berinteraksi
+                message.addEventListener('click', () => {
+                    audioPlayer.play();
+                    message.textContent = "";
+                });
+            });
+        });
+    </script>
+</body>
+</html>

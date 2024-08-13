@@ -23,7 +23,7 @@
 </head>
 <body>
     <h1>Audio Auto Play</h1>
-    <audio id="audioPlayer" autoplay>
+    <audio id="audioPlayer">
         <source src="maskot.mp3" type="audio/mp3">
     </audio>
     <div id="message"></div>
@@ -33,19 +33,26 @@
             const audioPlayer = document.getElementById('audioPlayer');
             const message = document.getElementById('message');
 
+            // Fungsi untuk memulai audio
+            const startAudio = () => {
+                audioPlayer.play().then(() => {
+                    console.log("Audio diputar.");
+                    message.textContent = ""; // Hapus pesan setelah audio diputar
+                }).catch(error => {
+                    console.log("Pemutaran audio gagal: " + error);
+                });
+            };
+
             // Coba mulai memutar audio
             audioPlayer.play().then(() => {
                 console.log("Audio diputar otomatis.");
             }).catch(error => {
                 console.log("Autoplay gagal: Interaksi pengguna mungkin diperlukan.");
-                message.textContent = "Autoplay gagal, klik untuk memulai audio.";
+                message.textContent = "Autoplay gagal, klik di mana saja untuk memulai audio.";
                 message.style.cursor = "pointer";
 
-                // Tambahkan event listener untuk memulai audio saat user berinteraksi
-                message.addEventListener('click', () => {
-                    audioPlayer.play();
-                    message.textContent = "";
-                });
+                // Tambahkan event listener ke seluruh body
+                document.body.addEventListener('click', startAudio, { once: true });
             });
         });
     </script>
